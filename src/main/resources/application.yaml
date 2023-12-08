@@ -1,0 +1,22 @@
+# This yaml contains some default properties that are necessary to run the project
+# but may want to use your properties file to override/change them as per your requirement
+
+spring:
+  # DataSource Configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/open-solutions
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Hibernate Configuration
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+
+  # Cache Configuration
+  cache:
+    type: none # Disable the default cache to use your own caching strategy
