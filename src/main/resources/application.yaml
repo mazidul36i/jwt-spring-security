@@ -1,6 +1,10 @@
 # This yaml contains some default properties that are necessary to run the project
 # but may want to use your properties file to override/change them as per your requirement
 
+# Default server port
+server:
+  port: 8080
+
 spring:
   # DataSource Configuration
   datasource:
@@ -20,3 +24,7 @@ spring:
   # Cache Configuration
   cache:
     type: none # Disable the default cache to use your own caching strategy
+
+# Public API endpoints
+auth:
+  public-urls: /api/v1/auth/**, /resources/**

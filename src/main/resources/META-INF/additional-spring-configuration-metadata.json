@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "auth.public-urls",
+      "type": "java.util.List",
+      "description": "List of public urls that will not be authenticated."
+    }
+  ]
+}
