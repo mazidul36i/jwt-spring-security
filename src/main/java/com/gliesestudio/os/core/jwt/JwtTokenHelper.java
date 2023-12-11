@@ -56,31 +56,6 @@ public class JwtTokenHelper {
     }
 
     /**
-     * Generate jwt token using user model
-     *
-     * @param userModel {@link UserModel}
-     * @return {@link String} jwt token
-     * @throws JsonProcessingException may throw if anything goes wrong with jwt subject creation
-     */
-    public final String generateToken(UserModel userModel) throws JsonProcessingException {
-        String subject = generateJwtSubject(userModel);
-        return generateToken(subject);
-    }
-
-    /**
-     * Generate jwt token using jwt subject
-     *
-     * @param jwtSubject {@link JwtTokenSubject}
-     * @return {@link String} jwt token
-     * @throws JsonProcessingException may throw if anything goes wrong with jwt subject creation
-     */
-    public final String generateToken(JwtTokenSubject jwtSubject) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        String subject = mapper.writeValueAsString(jwtSubject);
-        return generateToken(subject);
-    }
-
-    /**
      * Generate jwt token using jwt subject as json string
      *
      * @param jwtSubject jwt token in json string
