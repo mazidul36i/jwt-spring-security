@@ -1,5 +1,32 @@
 # Getting Started
 
+### Application properties
+Create an application.properties file to override default properties
+
+```
+# Server config
+server.port = 8080
+
+# DataSource Configuration
+spring.datasource.url = jdbc:mysql://localhost:3306/open-solutions
+spring.datasource.username = root
+spring.datasource.password = Welcome@123
+spring.datasource.driver-class-name = com.mysql.cj.jdbc.Driver
+
+# Hibernate Configuration
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto = update
+spring.jpa.show-sql = true
+
+# Exception handling
+spring.mvc.throw-exception-if-no-handler-found = true
+spring.web.resources.add-mappings = false
+
+# Spring security config
+JWT_SECRET_KEY = NjQzQUQyQUMtNEYwMi00NURGLUJBMjMtQkY3MzNCOTI3RDBG
+auth.public-urls = /api/v1/auth/**, /resources/**
+```
+
 ### Reference Documentation
 
 For further reference, please consider the following sections:
