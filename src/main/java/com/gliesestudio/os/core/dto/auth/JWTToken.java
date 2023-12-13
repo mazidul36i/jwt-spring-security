@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class JwtTokenSubject implements Serializable {
+public class JWTToken implements Serializable {
 
     private UUID userId;
     private String username;

@@ -2,7 +2,7 @@ package com.gliesestudio.os.core.service.auth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gliesestudio.os.core.dto.auth.AuthenticationResponse;
-import com.gliesestudio.os.core.dto.auth.JwtTokenSubject;
+import com.gliesestudio.os.core.dto.auth.JWTToken;
 import com.gliesestudio.os.core.dto.auth.RegisterRequest;
 import com.gliesestudio.os.core.enums.UserRole;
 import com.gliesestudio.os.core.exception.auth.AuthenticationException;
@@ -132,7 +132,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      */
     private AuthenticationResponse bearerTokenRefresh(String bearerToken) throws AuthenticationException {
         try {
-            JwtTokenSubject jwtSubject = jwtTokenHelper.getTokenSubject(bearerToken);
+            JWTToken jwtSubject = jwtTokenHelper.getTokenSubject(bearerToken);
             final Optional<UserModel> user = userRepository.findById(jwtSubject.getUserId());
             if (user.isEmpty()) {
                 throw new AuthenticationException("User doesn't exists");

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gliesestudio.os.core.dto.auth.AuthenticationResponse;
-import com.gliesestudio.os.core.dto.auth.JwtTokenSubject;
+import com.gliesestudio.os.core.dto.auth.JWTToken;
 import com.gliesestudio.os.core.model.UserModel;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -78,7 +78,7 @@ public class JwtTokenHelper {
     /**
      * Main jwt token generation method which takes subject in json string
      *
-     * @param subject       valid json string as per {@link JwtTokenSubject}
+     * @param subject       valid json string as per {@link JWTToken}
      * @param tokenValidity token validity time in milliseconds
      * @return {@link String} jwt token
      */
@@ -97,10 +97,10 @@ public class JwtTokenHelper {
      *
      * @param userModel {@link UserModel}
      * @return {@link String} jwt token subject in json string
-     * @throws JsonProcessingException if any error encounters while converting {@link JwtTokenSubject} to json string
+     * @throws JsonProcessingException if any error encounters while converting {@link JWTToken} to json string
      */
     public final String generateJwtSubject(UserModel userModel) throws JsonProcessingException {
-        JwtTokenSubject jwtSubject = JwtTokenSubject.builder()
+        JWTToken jwtSubject = JWTToken.builder()
                 .userId(userModel.getUserId())
                 .username(userModel.getUsername())
                 .email(userModel.getEmail())
@@ -116,8 +116,9 @@ public class JwtTokenHelper {
      * @param token valid jwt token in {@link String}
      * @return authenticated username in {@link String}
      */
-    public final String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+    public final String extractUsername(String token) throws JsonProcessingException {
+        JWTToken tokenSubject = getTokenSubject(token);
+        return tokenSubject.getUsername();
     }
 
     /**
@@ -135,14 +136,14 @@ public class JwtTokenHelper {
      * Extract subject from {@link String} jwt token
      *
      * @param token {@link String} valid jwt token
-     * @return {@link JwtTokenSubject} extracted from jwt token
-     * @throws JsonProcessingException if any error encounters while converting json string subject to {@link JwtTokenSubject}
+     * @return {@link JWTToken} extracted from jwt token
+     * @throws JsonProcessingException if any error encounters while converting json string subject to {@link JWTToken}
      */
-    public final JwtTokenSubject getTokenSubject(String token) throws JsonProcessingException {
+    public final JWTToken getTokenSubject(String token) throws JsonProcessingException {
         String subject = getSubject(token);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        return mapper.readValue(subject, JwtTokenSubject.class);
+        return mapper.readValue(subject, JWTToken.class);
     }
 
     /**
@@ -152,7 +153,7 @@ public class JwtTokenHelper {
      * @param userDetails Spring security internal {@link UserDetails} or it's extended {@link UserModel}
      * @return boolean - true if the token is valid else false
      */
-    public final boolean isTokenValid(String token, UserDetails userDetails) {
+    public final boolean isTokenValid(String token, UserDetails userDetails) throws JsonProcessingException {
         final String username = extractUsername(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }

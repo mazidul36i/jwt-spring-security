@@ -1,6 +1,7 @@
 package com.gliesestudio.os.core.jwt;
 
-import com.gliesestudio.os.core.dto.auth.JwtTokenSubject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.gliesestudio.os.core.dto.auth.JWTToken;
 import com.gliesestudio.os.core.service.user.UserRoleService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -52,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String token;
 
         if (authHeader == null || !authHeader.startsWith("Bearer")) {
@@ -63,26 +65,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         token = authHeader.split("Bearer ")[1];
         try {
-            JwtTokenSubject jwtSubject = jwtTokenHelper.getTokenSubject(token);
+            JWTToken jwtSubject = jwtTokenHelper.getTokenSubject(token);
             String username = jwtSubject.getUsername();
             UUID userId = jwtSubject.getUserId();
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 if (jwtTokenHelper.isTokenValid(token, userDetails)) {
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userRoleService.getAuthorities(userId));
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userRoleService.getAuthorities(userId));
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    log.info("Authentication successful for {}", authenticationToken.getPrincipal());
                 }
             }
 
             filterChain.doFilter(request, response);
             return;
+        } catch (UsernameNotFoundException | JsonProcessingException e) {
+            SecurityContextHolder.clearContext();
+            log.warn("Bad token found: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
+            SecurityContextHolder.clearContext();
             log.error("Token expired: {}", token);
-        } catch (UsernameNotFoundException e) {
-            log.warn("Username not found: {}", e.getMessage());
         } catch (Throwable t) {
+            SecurityContextHolder.clearContext();
             log.error("Token validation exception: {}", t.getMessage());
         }
         filterChain.doFilter(request, response);
