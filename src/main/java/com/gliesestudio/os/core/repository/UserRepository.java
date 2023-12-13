@@ -2,6 +2,7 @@ package com.gliesestudio.os.core.repository;
 
 import com.gliesestudio.os.core.dto.user.UserDto;
 import com.gliesestudio.os.core.model.UserModel;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,11 +24,12 @@ public interface UserRepository extends JpaRepository<UserModel, UUID> {
     /**
      * Find {@link UserDto} by query
      *
-     * @param query user's firstName, lastName, fullName, email, or username
+     * @param query    user's firstName, lastName, fullName, email, or username
+     * @param pageable {@link Pageable} object with page size and page number, optionally sorting
      * @return list of {@link UserDto} based on the search result
      */
     @Query("SELECT u FROM UserModel u WHERE LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :q, '%')) OR LOWER(u.username) LIKE LOWER(CONCAT('%', :q, '%')) ORDER BY u.firstName, u.lastName")
-    List<UserDto> findByQuery(@Param("q") String query);
+    List<UserDto> findByQuery(@Param("q") String query, Pageable pageable);
 
     /**
      * Find Optional {@link UserModel} by username ignoring case
