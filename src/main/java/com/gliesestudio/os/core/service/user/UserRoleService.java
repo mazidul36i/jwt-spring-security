@@ -35,13 +35,15 @@ public interface UserRoleService {
      */
     Collection<? extends GrantedAuthority> getAuthorities(UUID userId);
 
+ /*
+    // TODO implement these services
     // only for admins
     List<UserDto> getUsersByRoleAssigned(UserRole role, Pageable pageable);
 
     // Only for admins // cannot assign or remove higher roles
-    ResponseAcknowledgementDto addUserRoles(/* dto */);
+    ResponseAcknowledgementDto addUserRoles(*//* dto *//*);
 
     // Only for admins // cannot assign or remove higher roles
-    ResponseAcknowledgementDto removeUserRoles(/* dto */);
+    ResponseAcknowledgementDto removeUserRoles(*//* dto *//*);*/
 
 }
