@@ -8,8 +8,8 @@
         <version>3.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.gliesestudio.os</groupId>
-    <artifactId>core</artifactId>
+    <groupId>com.gliesestudio</groupId>
+    <artifactId>jwt-spring-security</artifactId>
     <version>1.0.0</version>
     <name>JWT Spring Security</name>
     <description>Spring Security Demo With JWT Authentication</description>
