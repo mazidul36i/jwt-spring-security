@@ -8,9 +8,9 @@ Create an application.properties file to override default properties
 server.port = 8080
 
 # DataSource Configuration
-spring.datasource.url = jdbc:mysql://localhost:3306/open-solutions
+spring.datasource.url = jdbc:mysql://localhost:3306/jwt_spring_security
 spring.datasource.username = root
-spring.datasource.password = Welcome@123
+spring.datasource.password = password
 spring.datasource.driver-class-name = com.mysql.cj.jdbc.Driver
 
 # Hibernate Configuration
