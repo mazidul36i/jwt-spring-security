@@ -8,7 +8,7 @@ server:
 spring:
   # DataSource Configuration
   datasource:
-    url: jdbc:mysql://localhost:3306/open-solutions
+    url: jdbc:mysql://localhost:3306/jwt_spring_security
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
