@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 08-12-2023
  */
 @SpringBootApplication
-public class OpenSolutionsCoreApplication {
+public class JWTSpringSecurityApplication {
 
     /**
      * Main starter method of the application which initializes spring boot
@@ -18,7 +18,7 @@ public class OpenSolutionsCoreApplication {
      * @param args list of arguments passed while application initialization
      */
     public static void main(String[] args) {
-        SpringApplication.run(OpenSolutionsCoreApplication.class, args);
+        SpringApplication.run(JWTSpringSecurityApplication.class, args);
     }
 
 }

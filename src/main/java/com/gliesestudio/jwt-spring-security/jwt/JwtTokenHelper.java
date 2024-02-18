@@ -34,7 +34,7 @@ public class JwtTokenHelper {
     @Value("${JWT_SECRET_KEY:NjQzQUQyQUMtNEYwMi00NURGLUJBMjMtQkY3MzNCOTI3RDBG}")
     private String SECRET_KEY;
 
-    @Value("${jwt.issuer:open-solutions}")
+    @Value("${jwt.issuer:gliese-studio}")
     private String issuer;
 
     /**

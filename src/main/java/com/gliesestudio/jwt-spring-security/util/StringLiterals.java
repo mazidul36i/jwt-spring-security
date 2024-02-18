@@ -8,7 +8,7 @@ package com.gliesestudio.os.core.util;
  */
 public class StringLiterals {
 
-    public final static String APPLICATION_NAME = "Open Solutions";
+    public final static String APPLICATION_NAME = "JWT Spring Security";
 
     public final static String EMPTY_SPACE = " ";
 
